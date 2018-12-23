@@ -67,5 +67,24 @@ swiftmailer:
     spool: { type: memory }
 
 sensio_framework_extra:
-   router:
-        annotations: false
+   view:
+       annotations: true
+   request:
+       converters: true
+
+fos_rest:
+    routing_loader:
+        default_format: json
+        include_format: false
+    view:
+        view_response_listener: 'force'
+    body_converter:
+        enabled: true
+        validate: true
+        validation_errors_argument: validationErrors
+    param_fetcher_listener: true
+    exception:
+        enabled: true
+        exception_controller: 'AppBundle\Controller\ExceptionController:showAction'
+
+
