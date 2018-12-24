@@ -2,15 +2,22 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  * Movie
  *
  * @ORM\Table(name="movie")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MovieRepository")
+ * @Hateoas\Relation(
+ *     "roles",
+ *     href=@Hateoas\Route("get_movie_roles", parameters={"movie"="expr(object.getId())"})
+ * )
  */
 class Movie
 {
@@ -22,6 +29,12 @@ class Movie
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Role", mappedBy="movie")
+     * @Serializer\Exclude()
+     */
+    private $roles;
 
     /**
      * @var string
@@ -56,6 +69,11 @@ class Movie
      * @Assert\NotBlank()
      */
     private $description;
+
+    public function __construct()
+    {
+        $this->roles = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -162,5 +180,38 @@ class Movie
     {
         return $this->description;
     }
-}
 
+    /**
+     * Add role
+     *
+     * @param Role $role
+     *
+     * @return Movie
+     */
+    public function addRole(Role $role)
+    {
+        $this->roles[] = $role;
+
+        return $this;
+    }
+
+    /**
+     * Remove role
+     *
+     * @param Role $role
+     */
+    public function removeRole(Role $role)
+    {
+        $this->roles->removeElement($role);
+    }
+
+    /**
+     * Get roles
+     *
+     * @return Collection
+     */
+    public function getRoles(): Collection
+    {
+        return $this->roles;
+    }
+}

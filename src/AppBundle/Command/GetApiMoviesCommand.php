@@ -10,20 +10,18 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class GetApiMoviesCommand extends Command
 {
-    /**
-     * {@inheritdoc}
-     */
+
     protected function configure()
     {
         $this
             ->setName('app:get_movies')
-            ->setDescription('Command to get countries');
+            ->setDescription('Command to get movies');
     }
 
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return int|null|void
+     * @return int|void|null
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
