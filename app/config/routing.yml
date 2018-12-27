@@ -37,3 +37,7 @@ movies_roles_post:
     defaults:
         _controller: AppBundle\Controller\MoviesController:postMovieRolesAction
         _format: json
+
+user:
+    resource: '@AppBundle/Controller/UserController.php'
+    type: annotation
