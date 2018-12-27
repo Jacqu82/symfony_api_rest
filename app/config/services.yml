@@ -37,3 +37,5 @@ services:
     AppBundle\Serializer\DoctrineEntityDeserializationSubscriber:
         tags: ['jms_serializer.event_subscribers']
         public: true
+
+    AppBundle\Entity\EntityMerger:

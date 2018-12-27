@@ -40,7 +40,7 @@ class Movie
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"Default"})
      * @Assert\Length(max=255)
      */
     private $title;
@@ -49,7 +49,8 @@ class Movie
      * @var int
      *
      * @ORM\Column(name="year", type="smallint")
-     * @Assert\Range(min=1888, max="2018")
+     * @Assert\NotBlank(groups={"Default"})
+     * @Assert\Range(min=1888, max="2018", groups={"Default", "Patch"})
      */
     private $year;
 
@@ -57,8 +58,8 @@ class Movie
      * @var int
      *
      * @ORM\Column(name="time", type="smallint")
-     * @Assert\NotBlank()
-     * @Assert\Range(min=1, max=300)
+     * @Assert\NotBlank(groups={"Default"})
+     * @Assert\Range(min=1, max=300, groups={"Default", "Patch"})
      */
     private $time;
 
@@ -66,7 +67,7 @@ class Movie
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"Default"})
      */
     private $description;
 
