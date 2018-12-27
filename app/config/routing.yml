@@ -4,40 +4,58 @@ app:
 
 movies:
     type: rest
-    resource: AppBundle\Controller\MoviesController
+    resource: AppBundle\Controller\MovieController
 
 movies_post:
     path: /movies
     methods: [POST]
     defaults:
-        _controller: AppBundle\Controller\MoviesController:postMoviesAction
+        _controller: AppBundle\Controller\MovieController:postMoviesAction
         _format: json
 
 movies_patch:
     path: /movies/{movie}
     methods: [PATCH]
     defaults:
-        _controller: AppBundle\Controller\MoviesController:patchMovieAction
+        _controller: AppBundle\Controller\MovieController:patchMovieAction
         _format: json
 
 humans:
     type: rest
-    resource: AppBundle\Controller\HumansController
+    resource: AppBundle\Controller\HumanController
 
 humans_post:
     path: /humans
     methods: [POST]
     defaults:
-        _controller: AppBundle\Controller\HumansController:postHumansAction
+        _controller: AppBundle\Controller\HumanController:postHumansAction
         _format: json
 
 movies_roles_post:
     path: /movies/{movie}/roles
     methods: [POST]
     defaults:
-        _controller: AppBundle\Controller\MoviesController:postMovieRolesAction
+        _controller: AppBundle\Controller\MovieController:postMovieRolesAction
         _format: json
 
-user:
-    resource: '@AppBundle/Controller/UserController.php'
-    type: annotation
+users:
+    resource: AppBundle\Controller\UserController
+    type: rest
+
+users_post:
+    path: /users
+    methods: [POST]
+    defaults:
+        _controller: AppBundle\Controller\UserController:postUserAction
+        _format: json
+
+users_patch:
+    path: /users/{theUser}
+    methods: [PATCH]
+    defaults:
+        _controller: AppBundle\Controller\UserController:patchUserAction
+        _format: json
+
+tokens:
+    type: rest
+    resource: AppBundle\Controller\TokenController

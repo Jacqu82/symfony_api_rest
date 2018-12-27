@@ -15,17 +15,18 @@ class LoadUserData extends Fixture implements ContainerAwareInterface
 
     public function load(ObjectManager $manager)
     {
-
         $passwordEncoder = $this->container->get('security.password_encoder');
 
         $user1 = new User();
         $user1->setUsername('jaca');
         $user1->setPassword($passwordEncoder->encodePassword($user1, 'qwerty'));
+        $user1->setRoles([User::ROLE_ADMIN]);
         $manager->persist($user1);
 
         $user2 = new User();
         $user2->setUsername('tom');
         $user2->setPassword($passwordEncoder->encodePassword($user1, 'asdfgh'));
+        $user2->setRoles([User::ROLE_USER]);
         $manager->persist($user2);
 
         $manager->flush();

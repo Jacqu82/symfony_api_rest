@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use FOS\RestBundle\Controller\Annotations as Rest;
 
-class HumansController extends AbstractController
+class HumanController extends AbstractController
 {
     use ControllerTrait;
 

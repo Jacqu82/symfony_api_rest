@@ -16,7 +16,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 /**
  * @Security("is_anonymous() or is_authenticated()")
  */
-class MoviesController extends AbstractController
+class MovieController extends AbstractController
 {
     use ControllerTrait;
 
