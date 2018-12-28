@@ -48,7 +48,7 @@ class UserController extends AbstractController
      * @Rest\NoRoute()
      * @ParamConverter("user", converter="fos_rest.request_body", options={"deserializationContext"={"groups"={"Deserialize"}}})
      */
-    public function postUserAction(User $user, ConstraintViolationListInterface $validationErrors)
+    public function postUsersAction(User $user, ConstraintViolationListInterface $validationErrors)
     {
         if (count($validationErrors) > 0) {
             throw new ValidationException($validationErrors);

@@ -39,3 +39,9 @@ services:
         public: true
 
     AppBundle\Entity\EntityMerger:
+
+    AppBundle\Controller\ImageController:
+        class: AppBundle\Controller\ImageController
+        arguments:
+            - '%image_directory%'
+            - '%image_base_url%'

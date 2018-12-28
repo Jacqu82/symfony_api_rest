@@ -46,7 +46,7 @@ users_post:
     path: /users
     methods: [POST]
     defaults:
-        _controller: AppBundle\Controller\UserController:postUserAction
+        _controller: AppBundle\Controller\UserController:postUsersAction
         _format: json
 
 users_patch:
@@ -59,3 +59,20 @@ users_patch:
 tokens:
     type: rest
     resource: AppBundle\Controller\TokenController
+
+images:
+    type: rest
+    resource: AppBundle\Controller\ImageController
+
+images_post:
+    path: /images
+    methods: [POST]
+    defaults:
+        _controller: AppBundle\Controller\ImageController:postImagesAction
+        _format: json
+
+images_upload_put:
+    path: /images/{image}/upload
+    methods: [PUT]
+    defaults:
+        _controller: AppBundle\Controller\ImageController:putImageUploadAction
