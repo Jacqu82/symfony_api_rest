@@ -95,4 +95,6 @@ lexik_jwt_authentication:
     pass_phrase: '%jwt_key_pass_phrase%'
     token_ttl: '%jwt_token_ttl%'
 
+hautelook_alice:
+    fixtures_path: 'DataFixtures/ORM/fixtures'
 
