@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Controller\Pagination\Pagination;
 use AppBundle\Entity\EntityMerger;
 use AppBundle\Entity\Movie;
 use AppBundle\Entity\Role;
@@ -11,6 +12,7 @@ use FOS\RestBundle\Controller\ControllerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
@@ -21,20 +23,28 @@ class MovieController extends AbstractController
     use ControllerTrait;
 
     private $entityMerger;
+    private $pagination;
 
-    public function __construct(EntityMerger $entityMerger)
+    public function __construct(EntityMerger $entityMerger, Pagination $pagination)
     {
         $this->entityMerger = $entityMerger;
+        $this->pagination = $pagination;
     }
 
     /**
      * @Rest\View()
      */
-    public function getMoviesAction()
+    public function getMoviesAction(Request $request)
     {
-        $movies = $this->getDoctrine()->getRepository(Movie::class)->findAll();
-
-        return $movies;
+        return $this->pagination->paginate(
+            $request,
+            Movie::class,
+            [],
+            'count',
+            [],
+            'get_movies',
+            []
+        );
     }
 
     /**
@@ -84,9 +94,17 @@ class MovieController extends AbstractController
     /**
      * @Rest\View()
      */
-    public function getMovieRolesAction(Movie $movie)
+    public function getMovieRolesAction(Movie $movie, Request $request)
     {
-        return $movie->getRoles();
+        return $this->pagination->paginate(
+            $request,
+            Role::class,
+            [],
+            'getCountByMovie',
+            [$movie],
+            'get_movie_roles',
+            ['movie' => $movie->getId()]
+        );
     }
 
     /**

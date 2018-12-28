@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Movie;
+
 /**
  * RoleRepository
  *
@@ -10,4 +12,13 @@ namespace AppBundle\Repository;
  */
 class RoleRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getCountByMovie(Movie $movie): int
+    {
+        return $this->createQueryBuilder('r')
+            ->select('count(r.id)')
+            ->andWhere('r.movie = :movie')
+            ->setParameter('movie', $movie)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }
