@@ -2,7 +2,6 @@
 
 namespace AppBundle\Resource\Filtering;
 
-
 interface FilterDefinitionInterface
 {
     public function getQueryParams(): array;
