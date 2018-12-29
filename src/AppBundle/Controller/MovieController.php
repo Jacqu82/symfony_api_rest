@@ -47,19 +47,8 @@ class MovieController extends AbstractController
         $movieFilterDefinitionFactory = new MovieFilterDefinitionFactory();
         $movieFilterDefinition = $movieFilterDefinitionFactory->factory($request);
 
-        //dump($this->moviePagination->paginate($page, $movieFilterDefinition));die;
-
         return $this->moviePagination->paginate($page, $movieFilterDefinition);
 
-//        return $this->pagination->paginate(
-//            $request,
-//            Movie::class,
-//            [],
-//            'count',
-//            [],
-//            'get_movies',
-//            []
-//        );
     }
 
     /**
@@ -111,15 +100,17 @@ class MovieController extends AbstractController
      */
     public function getMovieRolesAction(Movie $movie, Request $request)
     {
-        return $this->pagination->paginate(
-            $request,
-            Role::class,
-            [],
-            'getCountByMovie',
-            [$movie],
-            'get_movie_roles',
-            ['movie' => $movie->getId()]
-        );
+
+
+//        return $this->pagination->paginate(
+//            $request,
+//            Role::class,
+//            [],
+//            'getCountByMovie',
+//            [$movie],
+//            'get_movie_roles',
+//            ['movie' => $movie->getId()]
+//        );
     }
 
     /**
