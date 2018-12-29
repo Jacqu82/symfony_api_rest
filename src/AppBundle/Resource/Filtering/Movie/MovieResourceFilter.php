@@ -3,9 +3,10 @@
 namespace AppBundle\Resource\Filtering\Movie;
 
 use AppBundle\Repository\MovieRepository;
+use AppBundle\Resource\Filtering\ResourceFilterInterface;
 use Doctrine\ORM\QueryBuilder;
 
-class MovieResourceFilter
+class MovieResourceFilter implements ResourceFilterInterface
 {
     private $movieRepository;
 
@@ -14,13 +15,21 @@ class MovieResourceFilter
         $this->movieRepository = $movieRepository;
     }
 
-    public function getResources(MovieFilterDefinition $filter): QueryBuilder
+    /**
+     * @param MovieFilterDefinition $filter
+     * @return QueryBuilder
+     */
+    public function getResources($filter): QueryBuilder
     {
         return $this->getQuery($filter)
             ->select('m');
     }
 
-    public function getResourceCount(MovieFilterDefinition $filter): QueryBuilder
+    /**
+     * @param MovieFilterDefinition $filter
+     * @return QueryBuilder
+     */
+    public function getResourceCount($filter): QueryBuilder
     {
         return $this->getQuery($filter)
             ->select('count(m)');
@@ -54,8 +63,6 @@ class MovieResourceFilter
             $qb->andWhere($qb->expr()->lte('m.time', ':timeTo'))
                 ->setParameter('timeTo', $filter->getTimeTo());
         }
-
-        //dump($filter); die;
 
         if (null !== $filter->getSortByArray()) {
             foreach ($filter->getSortByArray() as $by => $order) {

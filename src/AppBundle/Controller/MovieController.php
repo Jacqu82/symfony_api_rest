@@ -2,14 +2,15 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Controller\Pagination\Pagination;
 use AppBundle\Entity\EntityMerger;
 use AppBundle\Entity\Movie;
 use AppBundle\Entity\Role;
 use AppBundle\Exception\ValidationException;
 use AppBundle\Resource\Filtering\Movie\MovieFilterDefinitionFactory;
+use AppBundle\Resource\Filtering\Role\RoleFilterDefinitionFactory;
 use AppBundle\Resource\Pagination\Movie\MoviePagination;
 use AppBundle\Resource\Pagination\PageRequestFactory;
+use AppBundle\Resource\Pagination\Role\RolePagination;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\ControllerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -26,14 +27,14 @@ class MovieController extends AbstractController
     use ControllerTrait;
 
     private $entityMerger;
-    private $pagination;
     private $moviePagination;
+    private $rolePagination;
 
-    public function __construct(EntityMerger $entityMerger, Pagination $pagination, MoviePagination $moviePagination)
+    public function __construct(EntityMerger $entityMerger, MoviePagination $moviePagination, RolePagination $rolePagination)
     {
         $this->entityMerger = $entityMerger;
-        $this->pagination = $pagination;
         $this->moviePagination = $moviePagination;
+        $this->rolePagination = $rolePagination;
     }
 
     /**
@@ -48,7 +49,6 @@ class MovieController extends AbstractController
         $movieFilterDefinition = $movieFilterDefinitionFactory->factory($request);
 
         return $this->moviePagination->paginate($page, $movieFilterDefinition);
-
     }
 
     /**
@@ -98,19 +98,15 @@ class MovieController extends AbstractController
     /**
      * @Rest\View()
      */
-    public function getMovieRolesAction(Movie $movie, Request $request)
+    public function getMovieRolesAction(Request $request, Movie $movie)
     {
+        $pageRequestFactory = new PageRequestFactory();
+        $page = $pageRequestFactory->fromRequest($request);
 
+        $roleFilterDefinitionFactory = new RoleFilterDefinitionFactory();
+        $roleFilterDefinition = $roleFilterDefinitionFactory->factory($request, $movie->getId());
 
-//        return $this->pagination->paginate(
-//            $request,
-//            Role::class,
-//            [],
-//            'getCountByMovie',
-//            [$movie],
-//            'get_movie_roles',
-//            ['movie' => $movie->getId()]
-//        );
+        return $this->rolePagination->paginate($page, $roleFilterDefinition);
     }
 
     /**

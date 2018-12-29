@@ -8,7 +8,10 @@ abstract class AbstractFilterDefinition implements FilterDefinitionInterface
 
     public function getQueryParams(): array
     {
-        return array_diff_key(get_object_vars($this), array_flip($this->getQueryParamsBlacklist()));
+        return array_diff_key(
+            $this->getParameters(),
+            array_flip($this->getQueryParamsBlacklist())
+        );
     }
 
     public function getQueryParamsBlacklist(): array
