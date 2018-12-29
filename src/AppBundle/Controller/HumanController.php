@@ -4,22 +4,30 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Person;
 use AppBundle\Exception\ValidationException;
+use AppBundle\Repository\PersonRepository;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\ControllerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use FOS\RestBundle\Controller\Annotations as Rest;
 
 class HumanController extends AbstractController
 {
     use ControllerTrait;
+
+    private $personRepository;
+
+    public function __construct(PersonRepository $personRepository)
+    {
+        $this->personRepository = $personRepository;
+    }
 
     /**
      * @Rest\View()
      */
     public function getHumansAction()
     {
-        $people = $this->getDoctrine()->getRepository(Person::class)->findAll();
+        $people = $this->personRepository->findAll();
 
         return $people;
     }

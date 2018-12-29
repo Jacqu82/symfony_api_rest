@@ -2,11 +2,11 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Annotation as App;
-use JMS\Serializer\Annotation as Serializer;
+use Doctrine\ORM\Mapping as ORM;
 use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RoleRepository")
@@ -39,6 +39,12 @@ class Role
     private $person;
 
     /**
+     * @var Movie
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Movie", inversedBy="roles")
+     */
+    private $movie;
+
+    /**
      * @ORM\Column(type="string", name="played_name", length=100)
      * @Assert\NotBlank()
      * @Assert\Length(min=1, max=100)
@@ -46,12 +52,6 @@ class Role
      * @Serializer\Expose()
      */
     private $playedName;
-
-    /**
-     * @var Movie
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Movie", inversedBy="roles")
-     */
-    private $movie;
 
     /**
      * @return mixed

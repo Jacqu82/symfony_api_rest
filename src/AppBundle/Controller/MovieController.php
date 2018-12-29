@@ -7,6 +7,9 @@ use AppBundle\Entity\EntityMerger;
 use AppBundle\Entity\Movie;
 use AppBundle\Entity\Role;
 use AppBundle\Exception\ValidationException;
+use AppBundle\Resource\Filtering\Movie\MovieFilterDefinitionFactory;
+use AppBundle\Resource\Pagination\Movie\MoviePagination;
+use AppBundle\Resource\Pagination\PageRequestFactory;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\ControllerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -24,11 +27,13 @@ class MovieController extends AbstractController
 
     private $entityMerger;
     private $pagination;
+    private $moviePagination;
 
-    public function __construct(EntityMerger $entityMerger, Pagination $pagination)
+    public function __construct(EntityMerger $entityMerger, Pagination $pagination, MoviePagination $moviePagination)
     {
         $this->entityMerger = $entityMerger;
         $this->pagination = $pagination;
+        $this->moviePagination = $moviePagination;
     }
 
     /**
@@ -36,15 +41,25 @@ class MovieController extends AbstractController
      */
     public function getMoviesAction(Request $request)
     {
-        return $this->pagination->paginate(
-            $request,
-            Movie::class,
-            [],
-            'count',
-            [],
-            'get_movies',
-            []
-        );
+        $pageRequestFactory = new PageRequestFactory();
+        $page = $pageRequestFactory->fromRequest($request);
+
+        $movieFilterDefinitionFactory = new MovieFilterDefinitionFactory();
+        $movieFilterDefinition = $movieFilterDefinitionFactory->factory($request);
+
+        //dump($this->moviePagination->paginate($page, $movieFilterDefinition));die;
+
+        return $this->moviePagination->paginate($page, $movieFilterDefinition);
+
+//        return $this->pagination->paginate(
+//            $request,
+//            Movie::class,
+//            [],
+//            'count',
+//            [],
+//            'get_movies',
+//            []
+//        );
     }
 
     /**
