@@ -3,8 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Person
@@ -47,6 +47,15 @@ class Person
      * @Serializer\Expose()
      */
     private $lastName;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Assert\Length(min=10, max=5000)
+     * @Serializer\Groups({"Default", "Deserialize"})
+     * @Serializer\Expose()
+     * @Serializer\Since("1.1")
+     */
+    private $biography;
 
     /**
      * @var \DateTime
@@ -140,5 +149,17 @@ class Person
     public function getDateOfBirth()
     {
         return $this->dateOfBirth;
+    }
+
+    public function getBiography(): string
+    {
+        return $this->biography;
+    }
+
+    public function setBiography($biography): Person
+    {
+        $this->biography = $biography;
+
+        return $this;
     }
 }

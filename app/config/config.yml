@@ -78,6 +78,8 @@ fos_rest:
         include_format: false
     view:
         view_response_listener: 'force'
+        mime_types:
+            json: ['application/json', 'application/json;version=1.0', 'application/json;version=1.1']
     body_converter:
         enabled: true
         validate: true
@@ -88,6 +90,22 @@ fos_rest:
         exception_controller: 'AppBundle\Controller\ExceptionController:showAction'
     serializer:
         groups: ['Default']
+    versioning:
+        enabled: true
+        default_version: '1.0'
+        resolvers:
+            query: true
+            custom_header: true
+            media_type:
+                enabled: true
+        guessing_order:
+            - media_type
+            - custom_header
+            - query
+    format_listener:
+        enabled: true
+        rules:
+            - { path: '^/', priorities: ['json'], fallback_format: json }
 
 lexik_jwt_authentication:
     private_key_path: '%jwt_private_key_path%'
@@ -97,4 +115,66 @@ lexik_jwt_authentication:
 
 hautelook_alice:
     fixtures_path: 'DataFixtures/ORM/fixtures'
+
+fos_http_cache:
+    proxy_client:
+        symfony:
+            http:
+                servers:
+                    - localhost:8000
+                base_url: localhost:8000/app_dev.php
+    cache_control:
+        defaults:
+            overwrite: false
+        rules:
+            -
+                match:
+                    path: ^/
+                headers:
+                    cache_control:
+                        public: true
+                        max_age: 1
+                        s_maxage: 1
+                    vary: [X-Accept-Version, Accept]
+                    etag: false
+
+nelmio_cors:
+    defaults:
+        allow_credentials: false
+        allow_origin: []
+        allow_headers: []
+        allow_methods: []
+        expose_headers: []
+        max_age: 0
+        hosts: []
+        origin_regex: false
+        forced_allow_origin_value: ~
+    paths:
+        '^/':
+            allow_origin: ['*']
+            allow_headers: ['X-Accept-Version']
+            allow_methods: ['POST', 'PATCH', 'GET', 'DELETE']
+            max_age: 3600
+
+nelmio_api_doc:
+    routes:
+        path_patterns:
+            - ^/movie
+            - ^/human
+            - ^/user
+            - ^/image
+    models:
+        use_jms: true
+    documentation:
+        info:
+            title: "First API"
+            description: "Movies database API"
+            version: 1.0.0
+        parameters:
+            param_movie_id:
+                name: movie
+                in: path
+                type: integer
+                description: "Movie id"
+                required: true
 

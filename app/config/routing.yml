@@ -76,3 +76,7 @@ images_upload_put:
     methods: [PUT]
     defaults:
         _controller: AppBundle\Controller\ImageController:putImageUploadAction
+
+app.swagger_ui:
+    resource: "@NelmioApiDocBundle/Resources/config/routing/swaggerui.xml"
+    prefix:   /api/doc

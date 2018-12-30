@@ -5,9 +5,9 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
-use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  * Movie
@@ -31,7 +31,7 @@ class Movie
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Role", mappedBy="movie")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Role", mappedBy="movie", cascade={"remove"})
      * @Serializer\Exclude()
      */
     private $roles;
