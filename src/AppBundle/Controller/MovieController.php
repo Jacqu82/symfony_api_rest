@@ -66,7 +66,7 @@ class MovieController extends AbstractController
      *     produces={"application/json"},
      *     @SWG\Parameter(name="body", in="body", required=true, @SWG\Schema(type="array", @Model(type=Movie::class))),
      *     @SWG\Response(response="201", description="Returned when resource created", @SWG\Schema(type="array", @Model(type=Movie::class))),
-     *     @SWG\Response(response="400", description="Returned when invalid date posted"),
+     *     @SWG\Response(response="400", description="Returned when invalid data posted"),
      *     @SWG\Response(response="401", description="Returned when not authenticated"),
      *     @SWG\Response(response="403", description="Returned when token is invalid or expired")
      * )
@@ -84,10 +84,15 @@ class MovieController extends AbstractController
         return $movie;
     }
 
+    //ToDO @SWG\Delete()
+
     /**
      * @Rest\View()
      * @InvalidateRoute("get_movie", params={"movie" = {"expression" = "movie.getId()"}})
      * @InvalidateRoute("get_movies")
+     * @SWG\Delete(tags={"Movie"})
+     * @SWG\Response(response="404", description="Returned when is not found")
+     * @Security("is_granted('delete', movie)")
      */
     public function deleteMovieAction(?Movie $movie)
     {
@@ -156,6 +161,8 @@ class MovieController extends AbstractController
 
         return $role;
     }
+
+    //ToDO @SWG\Patch()
 
     /**
      * @Rest\NoRoute()

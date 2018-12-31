@@ -122,7 +122,7 @@ fos_http_cache:
             http:
                 servers:
                     - localhost:8000
-                base_url: localhost:8000/app_dev.php
+                base_url: localhost:8000
     cache_control:
         defaults:
             overwrite: false
